@@ -7,6 +7,7 @@ import { Button, Drawer, Navbar } from 'react-daisyui';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { MdOutlineClose } from 'react-icons/md';
 import logoImage from '~/public/logo.png';
+import CollapsibleMenu from './CollapsibleMenu';
 
 type Props = {
   children?: ReactNode;
@@ -45,6 +46,10 @@ export default function Layout({ children, title }: Props) {
       <li>
         <a>솔루션 문의</a>
       </li>
+      <CollapsibleMenu extra="STEP 1." title="상품 발굴">
+        <div>스마트스토어</div>
+        <Link href="/search/naver">키워드 조회 (검색량)</Link>
+      </CollapsibleMenu>
     </ul>
   );
 

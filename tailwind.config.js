@@ -6,7 +6,11 @@ module.exports = {
     'node_modules/daisyui/dist/**/*.js', 'node_modules/react-daisyui/dist/**/*.js'
   ],  
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        xxs: ['8px', '10px'],
+      },
+    },
   },
   plugins: [require("daisyui")],
 }
