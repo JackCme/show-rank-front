@@ -260,6 +260,7 @@ export default function NaverSearch() {
             transition={{ duration: 0.5 }}
             // exit={{ opacity: 0, scale: 0.5 }}
             key="예상광고비"
+            className="flex flex-col gap-4"
           >
             <div>
               <div className="text-lg font-bold">파워링크 예상광고비</div>
@@ -296,12 +297,16 @@ export default function NaverSearch() {
                 </Stats>
               </div>
             </div>
-            <div className="text-lg font-bold">랭크 추천키워드 TOP 100</div>
-            <DataTable />
-            <div className="text-lg font-bold">
-              선택 키워드 예상 광고비 랭크
+            <div>
+              <div className="text-lg font-bold">랭크 추천키워드 TOP 100</div>
+              <DataTable />
             </div>
-            <DataTable />
+            <div>
+              <div className="text-lg font-bold">
+                선택 키워드 예상 광고비 랭크
+              </div>
+              <DataTable />
+            </div>
           </motion.div>
         )}
         {tabValue === 3 && (

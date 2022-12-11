@@ -47,8 +47,12 @@ export default function Layout({ children, title }: Props) {
         <a>솔루션 문의</a>
       </li>
       <CollapsibleMenu extra="STEP 1." title="상품 발굴">
-        <div>스마트스토어</div>
-        <Link href="/search/naver">키워드 조회 (검색량)</Link>
+        <div className="text-xs font-semibold pl-4 py-1">스마트스토어</div>
+        <ul className="menu">
+          <li>
+            <Link href="/search/naver">키워드 조회 (검색량)</Link>
+          </li>
+        </ul>
       </CollapsibleMenu>
     </ul>
   );
