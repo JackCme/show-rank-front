@@ -153,7 +153,7 @@ export default function NaverSearch() {
   const [searchBy, setSearchBy] = useState(router.query.by || defaultBy);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchCategory, setSearchCategory] = useState('');
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(-1);
 
   const handleSearchBy = (by: string) => {
     setSearchBy(by);
@@ -191,17 +191,24 @@ export default function NaverSearch() {
         {searchBy === 'keyword' && (
           <KeywordSearch
             key="keyword"
-            onSearch={(keyword) => setSearchKeyword(keyword)}
+            onSearch={(keyword) => {
+              setSearchKeyword(keyword);
+              setTabValue(0);
+            }}
           />
         )}
         {searchBy === 'category' && (
           <CategorySearch
             key="category"
-            onSearch={(category) => setSearchCategory(category)}
+            onSearch={(category) => {
+              setSearchCategory(category);
+              setTabValue(0);
+            }}
           />
         )}
         {(searchKeyword || searchCategory) && (
           <motion.div
+            key="tabs"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -211,14 +218,47 @@ export default function NaverSearch() {
               value={tabValue}
               onChange={setTabValue}
               boxed
-              className="justify-center mb-2"
+              className="justify-center mb-2 lg:justify-start"
+              size="md"
             >
               <Tabs.Tab value={0}>랭크요약</Tabs.Tab>
               <Tabs.Tab value={1}>TOP랭크</Tabs.Tab>
               <Tabs.Tab value={2}>예상광고비</Tabs.Tab>
               <Tabs.Tab value={3}>연관검색어</Tabs.Tab>
             </Tabs>
-            {tabValue === 0 && <DataTable />}
+          </motion.div>
+        )}
+
+        {/* <motion.div
+          key="랭크요약"
+          initial={{ x: -400 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+          exit={{ x: 1000 }}
+        >
+          {tabValue === 0 && <DataTable />}
+          {tabValue === 1 && <DataTable />}
+        </motion.div> */}
+        {tabValue === 0 && (
+          <motion.div
+            key="랭크요약"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            // exit={{ opacity: 0, scale: 0.5 }}
+          >
+            <DataTable />
+          </motion.div>
+        )}
+        {tabValue === 1 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            // exit={{ opacity: 0, scale: 0.5 }}
+            key="랭크요약2"
+          >
+            <DataTable />
           </motion.div>
         )}
       </AnimatePresence>
