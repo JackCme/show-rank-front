@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 
 // pages/_app.js
 import { NextPage } from 'next';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { useRouter } from 'next/router';
 

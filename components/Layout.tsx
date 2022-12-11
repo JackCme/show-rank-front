@@ -3,11 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
-import { Button, Drawer, Navbar } from 'react-daisyui';
+import { Button, Drawer, Navbar, Swap, useTheme } from 'react-daisyui';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { MdOutlineClose } from 'react-icons/md';
+import { BsMoon, BsSun } from 'react-icons/bs';
 import logoImage from '~/public/logo.png';
 import CollapsibleMenu from './CollapsibleMenu';
+import { useLocalStorage } from 'usehooks-ts';
 
 type Props = {
   children?: ReactNode;
@@ -15,6 +17,10 @@ type Props = {
 };
 
 export default function Layout({ children, title }: Props) {
+  const [theme, setTheme] = useLocalStorage('theme', 'dark');
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -29,6 +35,11 @@ export default function Layout({ children, title }: Props) {
   React.useEffect(() => {
     closeMenu();
   }, [router.pathname]);
+
+  React.useEffect(() => {
+    const body = document.body;
+    body.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const side = (
     <ul className="menu p-2 overflow-y-auto w-80 bg-base-100 text-base-content">
@@ -78,6 +89,48 @@ export default function Layout({ children, title }: Props) {
               <AiOutlineMenu className="stroke-current" />
             </Button>
           </div>
+          <div className="flex-1">
+            <Link href="/">SHOWRANK</Link>
+          </div>
+          <div className="flex-none">
+            <Button
+              shape="square"
+              color="ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleTheme();
+              }}
+            >
+              <Swap
+                onElement={<BsSun />}
+                offElement={<BsMoon />}
+                rotate
+                active={theme === 'dark'}
+              />
+            </Button>
+          </div>
+        </Navbar>
+
+        {/* Navbar for Desktop */}
+        <Navbar className="hidden lg:flex">
+          <Navbar.End>
+            <Button
+              shape="square"
+              color="ghost"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleTheme();
+              }}
+            >
+              <Swap
+                onElement={<BsSun />}
+                offElement={<BsMoon />}
+                rotate
+                active={theme === 'dark'}
+                // onChange={toggleTheme}
+              />
+            </Button>
+          </Navbar.End>
         </Navbar>
 
         {/* Page Content */}
