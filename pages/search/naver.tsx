@@ -1,13 +1,35 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Input, InputGroup, Select } from 'react-daisyui';
+import {
+  Button,
+  ButtonGroup,
+  Input,
+  InputGroup,
+  Select,
+  Tabs,
+} from 'react-daisyui';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AiOutlineSearch } from 'react-icons/ai';
 import DataTable from '~/components/DataTable';
 
 const defaultBy = 'keyword';
 
-function KeywordSearch() {
+interface KeywordSearchProps {
+  onSearch?: (keyword: string) => void;
+}
+
+function KeywordSearch({ onSearch }: KeywordSearchProps) {
+  const [keyword, setKeyword] = useState('');
+
+  const handleSearchClick = () => {
+    if (onSearch) onSearch(keyword);
+  };
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && onSearch) {
+      onSearch(keyword);
+    }
+  };
+
   return (
     <motion.div
       key="keywordSearch"
@@ -23,8 +45,11 @@ function KeywordSearch() {
           placeholder="상품 종류를 입력하세요"
           bordered
           className="flex-1"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={handleSearchKeyDown}
         />
-        <Button shape="square">
+        <Button shape="square" onClick={handleSearchClick}>
           <AiOutlineSearch className="h-6 w-6" />
         </Button>
       </InputGroup>
@@ -32,20 +57,31 @@ function KeywordSearch() {
   );
 }
 
-function CategorySearch() {
+interface CategorySearchProps {
+  onSearch?: (category: string) => void;
+}
+
+function CategorySearch({ onSearch }: CategorySearchProps) {
   const [cate1, setCate1] = useState('');
   const [cate2, setCate2] = useState('');
   const [cate3, setCate3] = useState('');
 
   const handleCate1Change = (value: string) => {
+    if (onSearch) onSearch(value);
     setCate1(value);
     setCate2('');
     setCate3('');
   };
 
   const handleCate2Change = (value: string) => {
+    if (onSearch) onSearch(`${cate1}/${value}`);
     setCate2(value);
     setCate3('');
+  };
+
+  const handleCate3Change = (value: string) => {
+    if (onSearch) onSearch(`${cate1}/${cate2}/${value}`);
+    setCate3(value);
   };
 
   return (
@@ -94,7 +130,11 @@ function CategorySearch() {
             transition={{ duration: 0.5 }}
             exit={{ x: -400 }}
           >
-            <Select value={cate3} onChange={setCate3} className="mb-2 w-full">
+            <Select
+              value={cate3}
+              onChange={handleCate3Change}
+              className="mb-2 w-full"
+            >
               <Select.Option value="" disabled>
                 3차 카테고리 선택
               </Select.Option>
@@ -111,6 +151,9 @@ function CategorySearch() {
 export default function NaverSearch() {
   const router = useRouter();
   const [searchBy, setSearchBy] = useState(router.query.by || defaultBy);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchCategory, setSearchCategory] = useState('');
+  const [tabValue, setTabValue] = useState(0);
 
   const handleSearchBy = (by: string) => {
     setSearchBy(by);
@@ -136,17 +179,49 @@ export default function NaverSearch() {
         </Button>
         <Button
           active={searchBy === 'category'}
-          onClick={() => handleSearchBy('category')}
+          onClick={() => {
+            setSearchKeyword('');
+            handleSearchBy('category');
+          }}
         >
           카테고리로 찾기
         </Button>
       </ButtonGroup>
       <AnimatePresence>
-        {searchBy === 'keyword' && <KeywordSearch key="keyword" />}
-        {/* {searchBy === 'category' && <div>HEllo World!</div>} */}
-        {searchBy === 'category' && <CategorySearch key="category" />}
+        {searchBy === 'keyword' && (
+          <KeywordSearch
+            key="keyword"
+            onSearch={(keyword) => setSearchKeyword(keyword)}
+          />
+        )}
+        {searchBy === 'category' && (
+          <CategorySearch
+            key="category"
+            onSearch={(category) => setSearchCategory(category)}
+          />
+        )}
+        {(searchKeyword || searchCategory) && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+          >
+            <Tabs
+              value={tabValue}
+              onChange={setTabValue}
+              boxed
+              className="justify-center mb-2"
+            >
+              <Tabs.Tab value={0}>랭크요약</Tabs.Tab>
+              <Tabs.Tab value={1}>TOP랭크</Tabs.Tab>
+              <Tabs.Tab value={2}>예상광고비</Tabs.Tab>
+              <Tabs.Tab value={3}>연관검색어</Tabs.Tab>
+            </Tabs>
+            {tabValue === 0 && <DataTable />}
+          </motion.div>
+        )}
       </AnimatePresence>
-      <DataTable />
     </div>
   );
 }
