@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
@@ -6,11 +7,12 @@ import {
   Input,
   InputGroup,
   Select,
+  Stats,
   Tabs,
 } from 'react-daisyui';
-import { AnimatePresence, motion } from 'framer-motion';
 import { AiOutlineSearch } from 'react-icons/ai';
 import DataTable from '~/components/DataTable';
+import RelatedKeywordTable from '~/components/RelatedKeywordTable';
 
 const defaultBy = 'keyword';
 
@@ -229,16 +231,6 @@ export default function NaverSearch() {
           </motion.div>
         )}
 
-        {/* <motion.div
-          key="랭크요약"
-          initial={{ x: -400 }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.5 }}
-          exit={{ x: 1000 }}
-        >
-          {tabValue === 0 && <DataTable />}
-          {tabValue === 1 && <DataTable />}
-        </motion.div> */}
         {tabValue === 0 && (
           <motion.div
             key="랭크요약"
@@ -259,6 +251,87 @@ export default function NaverSearch() {
             key="랭크요약2"
           >
             <DataTable />
+          </motion.div>
+        )}
+        {tabValue === 2 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            // exit={{ opacity: 0, scale: 0.5 }}
+            key="예상광고비"
+          >
+            <div>
+              <div className="text-lg font-bold">파워링크 예상광고비</div>
+              <div className="text-xs mb-2">
+                최근 한 달 N사 사용자가 해당 키워드를 검색했을 때, 통합검색
+                영역에 노출된 광고가 받은 평균 클릭수를 기반으로 산출되었습니다.
+              </div>
+              <div className="flex flex-col lg:flex-row gap-2">
+                <Stats className="w-full shadow-lg ">
+                  <Stats.Stat className="gap-4">
+                    <Stats.Stat.Item variant="title">PC</Stats.Stat.Item>
+                    <Stats.Stat.Item variant="value">
+                      0,000,000원
+                    </Stats.Stat.Item>
+                    <Stats.Stat.Item variant="desc">
+                      <div>노출수 : 1,234건</div>
+                      <div>클릭수 : 1,234건</div>
+                      <div>평균클릭비용 : 1,234원</div>
+                    </Stats.Stat.Item>
+                  </Stats.Stat>
+                </Stats>
+                <Stats className="w-full shadow-lg">
+                  <Stats.Stat className="gap-4">
+                    <Stats.Stat.Item variant="title">Mobile</Stats.Stat.Item>
+                    <Stats.Stat.Item variant="value">
+                      0,000,000원
+                    </Stats.Stat.Item>
+                    <Stats.Stat.Item variant="desc">
+                      <div>노출수 : 1,234건</div>
+                      <div>클릭수 : 1,234건</div>
+                      <div>평균클릭비용 : 1,234원</div>
+                    </Stats.Stat.Item>
+                  </Stats.Stat>
+                </Stats>
+              </div>
+            </div>
+            <div className="text-lg font-bold">랭크 추천키워드 TOP 100</div>
+            <DataTable />
+            <div className="text-lg font-bold">
+              선택 키워드 예상 광고비 랭크
+            </div>
+            <DataTable />
+          </motion.div>
+        )}
+        {tabValue === 3 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            // exit={{ opacity: 0, scale: 0.5 }}
+            key="연관검색어"
+            className="flex flex-col gap-2"
+          >
+            <div className="text-lg font-bold">사이트별 연관 검색어 랭크</div>
+            <div className="flex flex-col lg:flex-row gap-4">
+              <RelatedKeywordTable
+                title="네이버 연관키워드"
+                data={['휴대용유모차', '휴대용유모차', '휴대용유모차']}
+              />
+              <RelatedKeywordTable
+                title="네이버 자동완성어"
+                data={['휴대용유모차', '휴대용유모차', '휴대용유모차']}
+              />
+              <RelatedKeywordTable
+                title="11번가 연관키워드"
+                data={['휴대용유모차', '휴대용유모차', '휴대용유모차']}
+              />
+              <RelatedKeywordTable
+                title="11번가 자동완성어"
+                data={['휴대용유모차', '휴대용유모차', '휴대용유모차']}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
