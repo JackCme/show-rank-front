@@ -3,7 +3,7 @@ import { Table } from 'react-daisyui';
 export default function DataTable() {
   return (
     <div className="overflow-x-auto">
-      <Table compact>
+      <Table compact className="w-full">
         <Table.Head>
           <span />
           <span>Name</span>
