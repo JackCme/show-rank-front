@@ -63,6 +63,12 @@ export default function Layout({ children, title }: Props) {
           <li>
             <Link href="/search/naver">키워드 조회 (검색량)</Link>
           </li>
+          <li>
+            <Link href="/review/naver">리뷰 추출 (경쟁도)</Link>
+          </li>
+          <li>
+            <Link href="/sales/naver">판매량 조회</Link>
+          </li>
         </ul>
       </CollapsibleMenu>
     </ul>
