@@ -34,7 +34,7 @@ export default function Layout({ children, title }: Props) {
 
   React.useEffect(() => {
     closeMenu();
-  }, [router.pathname]);
+  }, [router.pathname, router.query]);
 
   React.useEffect(() => {
     const body = document.body;
@@ -68,6 +68,28 @@ export default function Layout({ children, title }: Props) {
           </li>
           <li>
             <Link href="/sales/naver">판매량 조회</Link>
+          </li>
+        </ul>
+      </CollapsibleMenu>
+      <CollapsibleMenu extra="STEP 2." title="상품 분석">
+        <ul className="menu">
+          <li>
+            <Link href="/rankup">랭킹업 AI (순위 올리기)</Link>
+          </li>
+          <li>
+            <Link href="/track-product">상품순위 추적</Link>
+          </li>
+          <li>
+            <Link
+              href={{
+                pathname: '/track-product',
+                query: {
+                  by: 'price',
+                },
+              }}
+            >
+              상품가격 추적
+            </Link>
           </li>
         </ul>
       </CollapsibleMenu>
