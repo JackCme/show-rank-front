@@ -12,52 +12,10 @@ import {
 } from 'react-daisyui';
 import { AiOutlineSearch } from 'react-icons/ai';
 import DataTable from '~/components/DataTable';
+import KeywordSearch from '~/components/KeywordSearch';
 import RelatedKeywordTable from '~/components/RelatedKeywordTable';
 
 const defaultBy = 'keyword';
-
-interface KeywordSearchProps {
-  onSearch?: (keyword: string) => void;
-}
-
-function KeywordSearch({ onSearch }: KeywordSearchProps) {
-  const [keyword, setKeyword] = useState('');
-
-  const handleSearchClick = () => {
-    if (onSearch) onSearch(keyword);
-  };
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && onSearch) {
-      onSearch(keyword);
-    }
-  };
-
-  return (
-    <motion.div
-      key="keywordSearch"
-      className="form-control"
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      exit={{ opacity: 0, scale: 0.5 }}
-    >
-      <InputGroup className="mb-2">
-        <Input
-          type="text"
-          placeholder="상품 종류를 입력하세요"
-          bordered
-          className="flex-1"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          onKeyDown={handleSearchKeyDown}
-        />
-        <Button shape="square" onClick={handleSearchClick}>
-          <AiOutlineSearch className="h-6 w-6" />
-        </Button>
-      </InputGroup>
-    </motion.div>
-  );
-}
 
 interface CategorySearchProps {
   onSearch?: (category: string) => void;
@@ -193,6 +151,7 @@ export default function NaverSearch() {
         {searchBy === 'keyword' && (
           <KeywordSearch
             key="keyword"
+            placeholder="상품 종류를 입력하세요"
             onSearch={(keyword) => {
               setSearchKeyword(keyword);
               setTabValue(0);
